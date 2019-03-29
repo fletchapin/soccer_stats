@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import plotly as plt
 import numpy as np
 import numpy.random as rd
 
@@ -173,17 +172,6 @@ for j in range(poi_count):
     remaining_matches.to_csv('./Results/' + str(j) + '/epl-results-1819.csv')
     table_csv.iloc[0:0]
 
-winners = {}
-for j in range(poi_count):
-    filepath = './Results/' + str(j) + '/epl-table-final.csv'
-    table_csv = pd.read_csv(filepath)
-    winner = table_csv[table_csv['Position'] == 1]['Club']
-    if winner in winnners:
-        winners[winner] += 1
-    else:
-        winners[winner] = 1
-
-print(winners)
 
 # references:
 # https://medium.com/@adamfreymiller/a-monte-carlo-simulation-of-the-2017-18-premier-league-season-3b7bbe8b8a13
