@@ -65,9 +65,11 @@ for j in range(poi_count):
 table_df = avg_table(table_df, poi_count)
 table_df.to_csv('./Results/epl-table-agg.csv')
 
+# add in percentages, and convert NaN to ''
 pos_df = pd.DataFrame(pos_dict).T
+pos_df = pos_df.fillna('')
 pos_df.to_csv('./Results/epl-pos-percent.csv')
 
 print(winners)
 print(tabulate(table_df, headers='keys', tablefmt='psql', showindex=False))
-print(tabulate(pos_df, headers='keys', tablefmt='psql', showindex=False))
+print(tabulate(pos_df, headers='keys', tablefmt='psql', showindex=True))
