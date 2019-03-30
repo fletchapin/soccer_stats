@@ -3,6 +3,13 @@ import plotly as plt
 from tabulate import tabulate
 
 
+def add_to_dict(dict, entry):
+    if entry in dict:
+        dict[entry] += 1
+    else:
+        dict[entry] = 1
+
+
 def agg_table(orig_df, add_df):
     #for team in orig_df['Club']:
         #team_stats = add_df[add_df['Club'] == team]
@@ -35,15 +42,13 @@ def avg_table(orig_df, count):
 
 poi_count = 100
 winners = {}
+pos_dict = {}
 for j in range(poi_count):
     filepath = './Results/' + str(j) + '/epl-table-final.csv'
     table_csv = pd.read_csv(filepath)
     table_csv.drop(table_csv.columns[0], axis=1)
-    winner = table_csv[table_csv['Position'] == 1]['Club'][0]
-    if winner in winners:
-        winners[winner] += 1
-    else:
-        winners[winner] = 1
+    winner = table_csv.loc[table_csv['Position'] == 1, 'Club'].values[0]
+    add_to_dict(winners, winner)
 
     if j == 0:
         table_df = pd.read_csv(filepath)
@@ -51,8 +56,18 @@ for j in range(poi_count):
     else:
         table_df = agg_table(table_df, table_csv)
 
+    for team in table_csv['Club']:
+        if j == 0:
+            pos_dict[team] = {}
+        pos = table_csv.loc[table_csv['Club'] == team, 'Position'].values[0]
+        add_to_dict(pos_dict[team], pos)
+
 table_df = avg_table(table_df, poi_count)
 table_df.to_csv('./Results/epl-table-agg.csv')
 
+pos_df = pd.DataFrame(pos_dict).T
+pos_df.to_csv('./Results/epl-pos-percent.csv')
+
 print(winners)
 print(tabulate(table_df, headers='keys', tablefmt='psql', showindex=False))
+print(tabulate(pos_df, headers='keys', tablefmt='psql', showindex=False))
