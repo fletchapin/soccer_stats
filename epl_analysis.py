@@ -63,6 +63,7 @@ for j in range(poi_count):
         add_to_dict(pos_dict[team], pos)
 
 table_df = avg_table(table_df, poi_count)
+table_df = table_df.sort_values(['Position'], 0, True)
 table_df.to_csv('./Results/epl-table-agg.csv')
 
 pos_df = pd.DataFrame(pos_dict).T
