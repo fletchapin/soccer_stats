@@ -10,4 +10,5 @@
 
 # Results #
 ###########
+/epl_sim_1819/Results/*
 /expected_goals/events/*
